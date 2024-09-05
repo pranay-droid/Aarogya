@@ -1,0 +1,28 @@
+import SpeechRecognition as sr
+
+def speech_to_text():
+    # Initialize recognizer
+    recognizer = sr.Recognizer()
+
+    # Use the microphone for input
+    with sr.Microphone() as source:
+        print("Please say something:")
+        
+        # Adjust for ambient noise
+        recognizer.adjust_for_ambient_noise(source)
+        
+        # Capture the audio from the microphone
+        audio_data = recognizer.listen(source)
+        
+        try:
+            # Recognize speech using Google Web Speech API
+            text = recognizer.recognize_google(audio_data)
+            print(f"You said: {text}")
+            return text
+        except sr.UnknownValueError:
+            print("Google Speech Recognition could not understand the audio")
+        except sr.RequestError:
+            print("Could not request results from Google Speech Recognition service")
+
+# Run the speech-to-text function
+speech_to_text()
